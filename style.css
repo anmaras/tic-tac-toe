@@ -35,6 +35,7 @@ body {
   border: 2px solid black;
   padding: 0.5rem 2rem;
   font-size: 2rem;
+  cursor: pointer;
 }
 
 #grid-container {
@@ -51,6 +52,13 @@ body {
   width: 150px;
   height: 150px;
   border: 1px solid black;
+}
+
+.grid-item:hover,
+.option-x:hover,
+.option-o:hover {
+  background-color: rgb(189, 218, 218);
+  cursor: pointer;
 }
 
 #btn-container {
