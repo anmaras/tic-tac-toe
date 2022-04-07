@@ -29,9 +29,11 @@ body {
   display: flex;
   justify-content: space-around;
 }
+.player-turn {
+  font-size: 2rem;
+}
 
-.option-x,
-.option-o {
+.option {
   border: 2px solid black;
   padding: 0.5rem 2rem;
   font-size: 2rem;
@@ -52,11 +54,15 @@ body {
   width: 150px;
   height: 150px;
   border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10rem;
+  user-select: none;
 }
 
 .grid-item:hover,
-.option-x:hover,
-.option-o:hover {
+.option:hover {
   background-color: rgb(189, 218, 218);
   cursor: pointer;
 }
