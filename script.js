@@ -1,13 +1,7 @@
-const option = document.querySelectorAll(".option");
-const gridItems = document.querySelectorAll(".grid-item");
-const boardCells = [...gridItems];
+const boardCells = document.querySelectorAll(".grid-item");
 const restart = document.querySelector(".restart-btn");
 /* make an array with 9 indexes and every index give a value of null */
 let array = Array(9).fill(null);
-
-const playerX = "X";
-const playerO = "O";
-const defaultPlayer = playerX;
 
 function addPlayerSelection() {
   /* if cell falsy add content */
@@ -15,9 +9,13 @@ function addPlayerSelection() {
   playerTurnText();
   createTheGameBoard(this.id);
   checkWin(this.textContent);
+  draw();
 }
 
 function toggle() {
+  const playerX = "X";
+  const playerO = "O";
+  const defaultPlayer = playerX;
   /* add as content the defaultplayer and for the next selection add playerO and toggle
   between those two */
 
@@ -40,7 +38,7 @@ function playerTurnText() {
   const secondPlayerTurn = "Player Two Turn";
   const turns = document.querySelector(".player-turn");
 
-  if (this.textContent === defaultPlayer) {
+  if (this.textContent) {
     turns.textContent = secondPlayerTurn;
   } else turns.textContent = firstPlayerTurn;
 }
@@ -67,10 +65,16 @@ function checkWin(id) {
     /* using the values from deconstructed array as indexes for main array 
 i can check if there is any win condition on the board*/
     if (array[a] === id && array[b] === id && array[c] === id) {
-      console.log(`The winner is player ${id}`);
+      alert(`The winner is player ${id}`);
       /* Remove event listener from cells after winner announced */
       removeEventAfterWin();
     }
+  }
+}
+
+function draw() {
+  if (array.every((cell) => cell != null)) {
+    alert("DRAW");
   }
 }
 
