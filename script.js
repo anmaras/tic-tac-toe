@@ -35,7 +35,12 @@ function addEntriesInToGridCell() {
   const functionValue = checkWhoIsTheWinnerr(this.textContent);
 
   /* Change the bg of winning boxes */
-  functionValue ? changeWinBoxBg(functionValue) : checkForDraw();
+  if (functionValue) {
+    changeWinBoxBg(functionValue);
+    removeEventAfterWin();
+  } else {
+    checkForDraw();
+  }
 }
 
 /* Check win conditions  */
@@ -67,15 +72,20 @@ function changeWinBoxBg(input) {
 
 function removeEventAfterWin() {
   boardCells.forEach((cell) =>
-    cell.removeEventListener("click", addPlayerSelection)
+    cell.removeEventListener("click", addEntriesInToGridCell)
   );
 }
 
 /* Refresh the page  */
 function restartTheGame() {
   array.fill(null);
-
-  boardCells.forEach((cell) => (cell.textContent = ""));
+  boardCells.forEach(
+    (cell) => (
+      (cell.textContent = ""),
+      ((cell.style.background = ""),
+      cell.addEventListener("click", addEntriesInToGridCell))
+    )
+  );
   defaultPlayer = playerX;
 }
 
