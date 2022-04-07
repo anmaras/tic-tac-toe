@@ -38,9 +38,8 @@ function addEntriesInToGridCell() {
   if (functionValue) {
     changeWinBoxBg(functionValue);
     removeEventAfterWin();
-  } else {
-    checkForDraw();
   }
+  checkForDraw();
 }
 
 /* Check win conditions  */
@@ -61,6 +60,13 @@ i can check if there is any win condition on the board*/
 function checkForDraw() {
   if (array.every((cell) => cell != null)) {
     return alert("DRAW");
+  }
+}
+
+/* BackDrop Toggle When is a Win */
+function playerWinMsg(input) {
+  if (input) {
+    document.body.style.background = "blue";
   }
 }
 
