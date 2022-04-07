@@ -27,21 +27,27 @@ function toggle() {
 }
 
 function createTheGameBoard(index) {
-  if (!array[index]) array[index] = this.textContent;
-  console.log(array);
+  /* if array is null or falsy in the specific index put this.textContent into the specific 
+  index */
+  if (!array[index]) {
+    return (array[index] = this.textContent);
+  }
 }
 
+/* Depend who is playing change the text of user turn div */
 function playerTurnText() {
-  const turns = document.querySelector(".player-turn");
   const firstPlayerTurn = "Player One Turn";
   const secondPlayerTurn = "Player Two Turn";
+  const turns = document.querySelector(".player-turn");
 
   if (this.textContent === defaultPlayer) {
     turns.textContent = secondPlayerTurn;
   } else turns.textContent = firstPlayerTurn;
 }
 
+/* Check win conditions  */
 function checkWin(id) {
+  /* Grid id combinations that win the game */
   const winCombination = [
     [0, 1, 2],
     [3, 4, 5],
@@ -53,17 +59,19 @@ function checkWin(id) {
     [2, 4, 6],
   ];
 
+  /* Loop through winCombination array  */
   for (const condition of winCombination) {
-    //array destructoring
+    /* With the use of array destructoring extract all the first index values from winConbination array
+    to a then do the same with the second and then with the third index */
     let [a, b, c] = condition;
+    /* using the values from deconstructed array as indexes for main array 
+i can check if there is any win condition on the board*/
     if (array[a] === id && array[b] === id && array[c] === id) {
       console.log(`The winner is player ${id}`);
+      /* Remove event listener from cells after winner announced */
       removeEventAfterWin();
     }
   }
-}
-function winMsg(player) {
-  return console.log(`The winner is player ${player}`);
 }
 
 function removeEventAfterWin() {
@@ -72,12 +80,14 @@ function removeEventAfterWin() {
   );
 }
 
+/* Start the game module */
 (function addEvent() {
   boardCells.forEach((cell) =>
     cell.addEventListener("click", addPlayerSelection)
   );
 })();
 
+/* Refresh the page  */
 function refreshPage() {
   window.location.reload();
 }
