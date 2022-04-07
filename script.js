@@ -1,25 +1,85 @@
 const option = document.querySelectorAll(".option");
-const gridItem = document.querySelectorAll(".grid-item");
-const arr = [...gridItem];
+const gridItems = document.querySelectorAll(".grid-item");
+const boardCells = [...gridItems];
+const restart = document.querySelector(".restart-btn");
+/* make an array with 9 indexes and every index give a value of null */
+let array = Array(9).fill(null);
 
-option.forEach((selection) =>
-  selection.addEventListener("click", playerSelection, { once: true })
-);
+const playerX = "X";
+const playerO = "O";
+const defaultPlayer = playerX;
 
-function playerSelection() {
-  console.log(this.textContent);
+function addPlayerSelection() {
+  /* if cell falsy add content */
+  if (!this.textContent) this.textContent = toggle();
+  playerTurnText();
+  createTheGameBoard(this.id);
+  checkWin(this.textContent);
 }
 
-function isNotEmpty(element) {
-  return element.textContent === "";
+function toggle() {
+  /* add as content the defaultplayer and for the next selection add playerO and toggle
+  between those two */
+
+  return this.textContent === defaultPlayer
+    ? (this.textContent = playerO)
+    : (this.textContent = playerX);
 }
 
-function textContent(input) {
-  return input.textContent;
+function createTheGameBoard(index) {
+  if (!array[index]) array[index] = this.textContent;
+  console.log(array);
 }
 
-arr.forEach((cell) => cell.addEventListener("click", log, { once: true }));
+function playerTurnText() {
+  const turns = document.querySelector(".player-turn");
+  const firstPlayerTurn = "Player One Turn";
+  const secondPlayerTurn = "Player Two Turn";
 
-function log() {
-  console.log(this.textContent);
+  if (this.textContent === defaultPlayer) {
+    turns.textContent = secondPlayerTurn;
+  } else turns.textContent = firstPlayerTurn;
 }
+
+function checkWin(id) {
+  const winCombination = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for (const condition of winCombination) {
+    //array destructoring
+    let [a, b, c] = condition;
+    if (array[a] === id && array[b] === id && array[c] === id) {
+      console.log(`The winner is player ${id}`);
+      removeEventAfterWin();
+    }
+  }
+}
+function winMsg(player) {
+  return console.log(`The winner is player ${player}`);
+}
+
+function removeEventAfterWin() {
+  boardCells.forEach((cell) =>
+    cell.removeEventListener("click", addPlayerSelection)
+  );
+}
+
+(function addEvent() {
+  boardCells.forEach((cell) =>
+    cell.addEventListener("click", addPlayerSelection)
+  );
+})();
+
+function refreshPage() {
+  window.location.reload();
+}
+
+restart.addEventListener("click", refreshPage);
