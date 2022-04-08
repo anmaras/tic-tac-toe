@@ -1,6 +1,6 @@
 /* Array & Array win combo */
 const arrayControls = (function () {
-  const array = [];
+  const array = Array(9).fill(null);
   const winCombos = [
     [0, 1, 2],
     [3, 4, 5],
@@ -49,6 +49,7 @@ const gamePlayModule = (() => {
           : players.playerX;
     }
     _winCondition(this.textContent);
+    _checkDrawCondition();
   }
   /* Private Function */
   function _winCondition(textContent) {
@@ -65,9 +66,16 @@ const gamePlayModule = (() => {
     }
   }
 
+  function _checkDrawCondition() {
+    if (arrayControls.array.every((cell) => cell != null)) {
+      console.log(arrayControls.array);
+      return alert("DRAW");
+    }
+  }
+
   /* Public Function */
   function restartGame() {
-    arrayControls.array.length = 0;
+    arrayControls.array.fill(null);
     domObjects.cells.forEach((cell) => (cell.textContent = ""));
     players.defaultPlayer = players.playerX;
   }
