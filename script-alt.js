@@ -51,6 +51,7 @@ const gamePlayModule = (() => {
     _winCondition(this.textContent);
     _checkDrawCondition();
   }
+  console.log(_winCondition(this.textContent));
   /* Private Function */
   function _winCondition(textContent) {
     for (const condition of arrayControls.winCombos) {
@@ -60,8 +61,7 @@ const gamePlayModule = (() => {
         arrayControls.array[b] === textContent &&
         arrayControls.array[c] === textContent
       ) {
-        const winArray = [a, b, c];
-        console.log(winArray);
+        return [a, b, c];
       }
     }
   }
@@ -72,6 +72,8 @@ const gamePlayModule = (() => {
       return alert("DRAW");
     }
   }
+
+  function _changeStyleOnWin() {}
 
   /* Public Function */
   function restartGame() {
