@@ -1,7 +1,7 @@
 /* Array & Array win combo */
 const arrayControls = (function () {
   const array = [];
-  const winningCombos = [
+  const winCombos = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -11,7 +11,7 @@ const arrayControls = (function () {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  return { array, winningCombos };
+  return { array, winCombos };
 })();
 
 /* Dom Objects */
@@ -38,6 +38,7 @@ const players = (function () {
 
 /* this refer to the object that i create (arrow wont work) */
 const gamePlayModule = (() => {
+  /* Public Function */
   function playerChoice() {
     if (!arrayControls.array[this.id]) {
       arrayControls.array[this.id] = players.defaultPlayer;
@@ -47,8 +48,24 @@ const gamePlayModule = (() => {
           ? players.playerO
           : players.playerX;
     }
+    _winCondition(this.textContent);
+  }
+  /* Private Function */
+  function _winCondition(textContent) {
+    for (const condition of arrayControls.winCombos) {
+      const [a, b, c] = condition;
+      if (
+        arrayControls.array[a] === textContent &&
+        arrayControls.array[b] === textContent &&
+        arrayControls.array[c] === textContent
+      ) {
+        const winArray = [a, b, c];
+        console.log(winArray);
+      }
+    }
   }
 
+  /* Public Function */
   function restartGame() {
     arrayControls.array.length = 0;
     domObjects.cells.forEach((cell) => (cell.textContent = ""));
@@ -57,7 +74,6 @@ const gamePlayModule = (() => {
 
   return { playerChoice, restartGame };
 })();
-
 /* 
 function checkWinCombinations() {
   const winCondition = function () {
