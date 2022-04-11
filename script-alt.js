@@ -1,7 +1,5 @@
 /* Array & Array win combo */
 const displayControls = (function () {
-  const playerXScore = document.querySelector(".player1");
-  const playerOScore = document.querySelector(".player2");
   const cells = document.querySelectorAll(".grid-item");
   const restart = document.querySelector(".restart-btn");
   const scoreBoard = document.querySelector(".score");
@@ -25,8 +23,6 @@ const displayControls = (function () {
     cellWinTextColor,
     cells,
     restart,
-    playerXScore,
-    playerOScore,
     scoreBoard,
   };
 })();
