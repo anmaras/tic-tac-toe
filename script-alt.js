@@ -1,7 +1,7 @@
 /* Array & Array win combo */
 const displayControls = (function () {
-  const playerXScore = document.querySelector(".player1").textContent;
-  const playerOScore = document.querySelector(".player2").textContent;
+  const playerXScore = document.querySelector(".player1");
+  const playerOScore = document.querySelector(".player2");
   const cells = document.querySelectorAll(".grid-item");
   const restart = document.querySelector(".restart-btn");
   const cellWinBgColor = "Red";
@@ -34,7 +34,8 @@ const playerFactory = (name, score) => {
 };
 
 const gamePlayModule = (() => {
-  let counter = 0;
+  let player1Counter = 0;
+  let player2Counter = 0;
   const player1 = playerFactory("X");
   const player2 = playerFactory("O");
   const defaultPlayer = playerFactory(player1.name);
@@ -64,7 +65,7 @@ const gamePlayModule = (() => {
           cell.removeEventListener("click", gamePlayModule.playerChoice)
         );
         displayControls.restart.textContent = `Play again!`;
-
+        _addCounterWin([a, b, c]);
         return [a, b, c];
       }
       if (displayControls.emptyBoard.every((cell) => cell != null)) {
@@ -73,18 +74,33 @@ const gamePlayModule = (() => {
     }
   }
 
-  /* 
-  function addCounterWin(array) {
-    if (array.every((value) => (value = player1.name))) {
-      counter++;
-      displayControls.playerXScore.innerText = `Player X -${counter}-`;
-    } else if (array.every((value) => (value = player2.name))) {
-      counter++;
-      displayControls.playerOScore.innerText = `Player O -${counter}-`;
+  function _addCounterWin(array) {
+    if (
+      array.every(
+        (value) => displayControls.cells[value].textContent === player1.name
+      )
+    ) {
+      player1Counter++;
+      displayControls.playerXScore.innerText = `Player X -${player1Counter}-`;
+    } else if (
+      array.every(
+        (value) => displayControls.cells[value].textContent === player2.name
+      )
+    ) {
+      player2Counter++;
+      displayControls.playerOScore.innerText = `Player O -${player2Counter}-`;
+    }
+    counterLimit(player1Counter, player2Counter);
+  }
+
+  function counterLimit(player1Counter, playerCounter2) {
+    if (player1Counter >= 3) {
+      console.log("player1 won");
+    } else if (playerCounter2 >= 3) {
+      console.log("player2 won");
     }
   }
 
- */
   /* Private Function for grid cell bg clr change on win*/
   /*   function _changeStyleOnWin(winArray) {
     if (winArray) {
@@ -114,7 +130,7 @@ const gamePlayModule = (() => {
     displayControls.restart.textContent = "Restart";
   }
 
-  return { playerChoice, restartGame };
+  return { playerChoice, restartGame, _winCondition };
 })();
 
 displayControls.cells.forEach((cell) =>
