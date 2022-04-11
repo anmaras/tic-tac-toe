@@ -4,6 +4,7 @@ const displayControls = (function () {
   const playerOScore = document.querySelector(".player2");
   const cells = document.querySelectorAll(".grid-item");
   const restart = document.querySelector(".restart-btn");
+  const scoreBoard = document.querySelector(".score");
   const cellWinBgColor = "Red";
   const cellWinTextColor = "White";
   const emptyBoard = Array(9).fill(null);
@@ -26,6 +27,7 @@ const displayControls = (function () {
     restart,
     playerXScore,
     playerOScore,
+    scoreBoard,
   };
 })();
 
@@ -34,11 +36,10 @@ const playerFactory = (name, score) => {
 };
 
 const gamePlayModule = (() => {
-  let player1Counter = 0;
-  let player2Counter = 0;
-  const player1 = playerFactory("X");
-  const player2 = playerFactory("O");
+  const player1 = playerFactory("X", 0);
+  const player2 = playerFactory("O", 0);
   const defaultPlayer = playerFactory(player1.name);
+  displayControls.scoreBoard.textContent = `${player1.score} : ${player2.score}`;
 
   /* Public Function */
   function playerChoice() {
@@ -65,8 +66,7 @@ const gamePlayModule = (() => {
           cell.removeEventListener("click", gamePlayModule.playerChoice)
         );
         displayControls.restart.textContent = `Play again!`;
-        _addCounterWin([a, b, c]);
-        return [a, b, c];
+        _addCounterWinCondition([a, b, c]);
       }
       if (displayControls.emptyBoard.every((cell) => cell != null)) {
         return console.log("draw");
@@ -74,35 +74,37 @@ const gamePlayModule = (() => {
     }
   }
 
-  function _addCounterWin(array) {
+  function _addCounterWinCondition(array) {
     if (
       array.every(
         (value) => displayControls.cells[value].textContent === player1.name
       )
     ) {
-      player1Counter++;
-      displayControls.playerXScore.innerText = `Player X -${player1Counter}-`;
+      player1.score++;
+      displayControls.playerXScore.innerText = `Player X -${player1.score}-`;
     } else if (
       array.every(
         (value) => displayControls.cells[value].textContent === player2.name
       )
     ) {
-      player2Counter++;
-      displayControls.playerOScore.innerText = `Player O -${player2Counter}-`;
+      player2.score++;
+      displayControls.playerOScore.innerText = `Player O -${player2.score}-`;
     }
-    counterLimit(player1Counter, player2Counter);
+    _counterLimit();
   }
 
-  function counterLimit(player1Counter, playerCounter2) {
-    if (player1Counter >= 3) {
+  function _counterLimit() {
+    console.log(player1.score);
+    if (player1.score >= 3) {
       console.log("player1 won");
-    } else if (playerCounter2 >= 3) {
+    } else if (player2.score >= 3) {
       console.log("player2 won");
     }
   }
 
+  function _scoreDisplay() {}
   /* Private Function for grid cell bg clr change on win*/
-  /*   function _changeStyleOnWin(winArray) {
+  /*   function _changeFontAndBgStyleOnWin(winArray) {
     if (winArray) {
       winArray.forEach(
         (value) => (
