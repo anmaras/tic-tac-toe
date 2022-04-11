@@ -1,7 +1,11 @@
 /* Array & Array win combo */
-const arrayControls = (function () {
-  const array = Array(9).fill(null);
-  const winCombos = [
+const displayControls = (function () {
+  const cells = document.querySelectorAll(".grid-item");
+  const restart = document.querySelector(".restart-btn");
+  const cellWinBgColor = "Red";
+  const cellWinTextColor = "White";
+  const emptyBoard = Array(9).fill(null);
+  const winBoard = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -11,66 +15,58 @@ const arrayControls = (function () {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  return { array, winCombos };
+  return {
+    emptyBoard,
+    winBoard,
+    cellWinBgColor,
+    cellWinTextColor,
+    cells,
+    restart,
+  };
 })();
 
-/* Dom Objects */
-const domObjects = (function () {
-  const cells = document.querySelectorAll(".grid-item");
-  const restart = document.querySelector(".restart-btn");
-  return { cells, restart };
-})();
-
-/* Dom Object BG & Text Color */
-const domObjectsColors = (function () {
-  const cellBgColor = "Red";
-  const cellTextColor = "White";
-  return { cellBgColor, cellTextColor };
-})();
+const playerFactory = (name) => {
+  return { name };
+};
 
 /* Players */
-const players = (function () {
+/* const players = (function () {
   const playerX = "X";
   const playerO = "O";
   const defaultPlayer = playerX;
   return { playerX, playerO, defaultPlayer };
-})();
+})(); */
 
-/* this refer to the object that i create */
 const gamePlayModule = (() => {
+  const personX = playerFactory("X");
+  const personO = playerFactory("O");
+  const defaultPlayer = playerFactory([personX.name]);
   /* Public Function */
   function playerChoice() {
-    if (!arrayControls.array[this.id]) {
-      arrayControls.array[this.id] = players.defaultPlayer;
-      this.textContent = players.defaultPlayer;
-      players.defaultPlayer =
-        players.defaultPlayer == players.playerX
-          ? players.playerO
-          : players.playerX;
+    if (!displayControls.emptyBoard[this.id]) {
+      displayControls.emptyBoard[this.id] = defaultPlayer.name;
+      this.textContent = defaultPlayer.name;
+      //tenary condition
+      defaultPlayer.name =
+        defaultPlayer.name == personX.name ? personO.name : personX.name;
     }
     _winCondition(this.textContent);
   }
 
   /* Private Function */
   function _winCondition(textContent) {
-    for (const condition of arrayControls.winCombos) {
+    for (const condition of displayControls.winBoard) {
       const [a, b, c] = condition;
       if (
-        arrayControls.array[a] === textContent &&
-        arrayControls.array[b] === textContent &&
-        arrayControls.array[c] === textContent
+        displayControls.emptyBoard[a] === textContent &&
+        displayControls.emptyBoard[b] === textContent &&
+        displayControls.emptyBoard[c] === textContent
       ) {
-        _changeStyleOnWin([a, b, c]);
+        return _changeStyleOnWin([a, b, c]);
       }
-      _checkDrawCondition();
-      break;
-    }
-  }
-
-  /* Private Function  for draw condition*/
-  function _checkDrawCondition() {
-    if (arrayControls.array.every((cell) => cell != null)) {
-      console.log("Draw");
+      if (displayControls.emptyBoard.every((cell) => cell != null)) {
+        return console.log("draw");
+      }
     }
   }
 
@@ -78,28 +74,34 @@ const gamePlayModule = (() => {
   function _changeStyleOnWin(winArray) {
     if (winArray) {
       winArray.forEach(
-        (value) => (domObjects.cells[value].style.background = "red")
+        (value) => (
+          (displayControls.cells[value].style.background =
+            displayControls.cellWinBgColor),
+          (displayControls.cells[value].style.color =
+            displayControls.cellWinTextColor)
+        )
       );
     }
-    return;
   }
 
   /* Public Function */
   function restartGame() {
-    arrayControls.array.fill(null);
-    domObjects.cells.forEach((cell) => (cell.textContent = ""));
+    displayControls.emptyBoard.fill(null);
+    displayControls.cells.forEach(
+      (cell) => (
+        (cell.textContent = ""),
+        (cell.style.background = ""),
+        (cell.style.color = "")
+      )
+    );
     players.defaultPlayer = players.playerX;
   }
 
   return { playerChoice, restartGame };
 })();
 
-document
-  .querySelectorAll(".grid-item")
-  .forEach((cell) =>
-    cell.addEventListener("click", gamePlayModule.playerChoice)
-  );
+displayControls.cells.forEach((cell) =>
+  cell.addEventListener("click", gamePlayModule.playerChoice)
+);
 
-document
-  .querySelector(".restart-btn")
-  .addEventListener("click", gamePlayModule.restartGame);
+displayControls.restart.addEventListener("click", gamePlayModule.restartGame);
