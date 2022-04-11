@@ -31,15 +31,15 @@ const displayControls = (function () {
   };
 })();
 
-const playerFactory = (name, score) => {
+const playerFactory = (name, score = 0) => {
   return { name, score };
 };
 
 const gamePlayModule = (() => {
-  const player1 = playerFactory("X", 0);
-  const player2 = playerFactory("O", 0);
+  const player1 = playerFactory("X");
+  const player2 = playerFactory("O");
   const defaultPlayer = playerFactory(player1.name);
-  displayControls.scoreBoard.textContent = `${player1.score} : ${player2.score}`;
+  let winArray = [];
 
   /* Public Function */
   function playerChoice() {
@@ -62,39 +62,39 @@ const gamePlayModule = (() => {
         displayControls.emptyBoard[b] === textContent &&
         displayControls.emptyBoard[c] === textContent
       ) {
+        winArray = [a, b, c];
         displayControls.cells.forEach((cell) =>
           cell.removeEventListener("click", gamePlayModule.playerChoice)
         );
-        displayControls.restart.textContent = `Play again!`;
-        _addCounterWinCondition([a, b, c]);
+        _addPointOnWinCondition(winArray);
+        _changeFontAndBgStyleOnWin(winArray);
       }
       if (displayControls.emptyBoard.every((cell) => cell != null)) {
-        return console.log("draw");
+        console.log("draw");
       }
     }
   }
 
-  function _addCounterWinCondition(array) {
+  function _addPointOnWinCondition(array) {
     if (
       array.every(
         (value) => displayControls.cells[value].textContent === player1.name
       )
     ) {
       player1.score++;
-      displayControls.playerXScore.innerText = `Player X -${player1.score}-`;
+      displayControls.scoreBoard.textContent = `${player1.score} : ${player2.score}`;
     } else if (
       array.every(
         (value) => displayControls.cells[value].textContent === player2.name
       )
     ) {
       player2.score++;
-      displayControls.playerOScore.innerText = `Player O -${player2.score}-`;
+      displayControls.scoreBoard.textContent = `${player1.score} : ${player2.score}`;
     }
     _counterLimit();
   }
 
   function _counterLimit() {
-    console.log(player1.score);
     if (player1.score >= 3) {
       console.log("player1 won");
     } else if (player2.score >= 3) {
@@ -102,9 +102,8 @@ const gamePlayModule = (() => {
     }
   }
 
-  function _scoreDisplay() {}
   /* Private Function for grid cell bg clr change on win*/
-  /*   function _changeFontAndBgStyleOnWin(winArray) {
+  function _changeFontAndBgStyleOnWin(winArray) {
     if (winArray) {
       winArray.forEach(
         (value) => (
@@ -115,7 +114,7 @@ const gamePlayModule = (() => {
         )
       );
     }
-  } */
+  }
 
   /* Public Function */
   function restartGame() {
