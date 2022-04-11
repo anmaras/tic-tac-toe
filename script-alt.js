@@ -36,7 +36,7 @@ const players = (function () {
   return { playerX, playerO, defaultPlayer };
 })();
 
-/* this refer to the object that i create (arrow wont work) */
+/* this refer to the object that i create */
 const gamePlayModule = (() => {
   /* Public Function */
   function playerChoice() {
@@ -49,9 +49,8 @@ const gamePlayModule = (() => {
           : players.playerX;
     }
     _winCondition(this.textContent);
-    _checkDrawCondition();
   }
-  console.log(_winCondition(this.textContent));
+
   /* Private Function */
   function _winCondition(textContent) {
     for (const condition of arrayControls.winCombos) {
@@ -61,19 +60,29 @@ const gamePlayModule = (() => {
         arrayControls.array[b] === textContent &&
         arrayControls.array[c] === textContent
       ) {
-        return [a, b, c];
+        _changeStyleOnWin([a, b, c]);
       }
+      _checkDrawCondition();
+      break;
     }
   }
 
+  /* Private Function  for draw condition*/
   function _checkDrawCondition() {
     if (arrayControls.array.every((cell) => cell != null)) {
-      console.log(arrayControls.array);
-      return alert("DRAW");
+      console.log("Draw");
     }
   }
 
-  function _changeStyleOnWin() {}
+  /* Private Function for grid cell bg clr change on win*/
+  function _changeStyleOnWin(winArray) {
+    if (winArray) {
+      winArray.forEach(
+        (value) => (domObjects.cells[value].style.background = "red")
+      );
+    }
+    return;
+  }
 
   /* Public Function */
   function restartGame() {
@@ -84,49 +93,6 @@ const gamePlayModule = (() => {
 
   return { playerChoice, restartGame };
 })();
-/* 
-function checkWinCombinations() {
-  const winCondition = function () {
-    for (const condition of this.winCombinationArray) {
-      const [a, b, c] = condition;
-      if (
-        this.array[a] === this.textContent &&
-        this.array[b] === this.textContent &&
-        this.array[c] === this.textContent
-      ) {
-        const winArray = [a, b, c];
-        winArray.map(
-          (box) => (
-            (this.cells[box].style.background = this.cellBgColor),
-            (this.cells[box].style.color = this.cellTextColor)
-          )
-        );
-      }
-      if (this.array.every((cell) => cell != null)) {
-        return alert("DRAW");
-      }
-    }
-  };
-  return { winCondition };
-} */
-/* 
-const gameStart = Object.assign(
-  {},
-  gameBoardArray(),
-  gamePlayers("X", "O"),
-  gamePlay(),
-  checkWinCombinations(),
-  displayControls()
-); */
-
-/* This refers to the grid object arrow wont work */
-/* const gameStartHandler = function () {
-  gameStart.playerChoice(this.id);
-  gameStart.winCondition();
-  this.textContent = gameStart.textContent;
-}; */
-
-/* Events modules */
 
 document
   .querySelectorAll(".grid-item")
