@@ -1,5 +1,7 @@
 /* Array & Array win combo */
 const displayControls = (function () {
+  const playerXScore = document.querySelector(".player1").textContent;
+  const playerOScore = document.querySelector(".player2").textContent;
   const cells = document.querySelectorAll(".grid-item");
   const restart = document.querySelector(".restart-btn");
   const cellWinBgColor = "Red";
@@ -22,25 +24,21 @@ const displayControls = (function () {
     cellWinTextColor,
     cells,
     restart,
+    playerXScore,
+    playerOScore,
   };
 })();
 
-const playerFactory = (name) => {
-  return { name };
+const playerFactory = (name, score) => {
+  return { name, score };
 };
 
-/* Players */
-/* const players = (function () {
-  const playerX = "X";
-  const playerO = "O";
-  const defaultPlayer = playerX;
-  return { playerX, playerO, defaultPlayer };
-})(); */
-
 const gamePlayModule = (() => {
-  const personX = playerFactory("X");
-  const personO = playerFactory("O");
-  const defaultPlayer = playerFactory([personX.name]);
+  let counter = 0;
+  const player1 = playerFactory("X");
+  const player2 = playerFactory("O");
+  const defaultPlayer = playerFactory(player1.name);
+
   /* Public Function */
   function playerChoice() {
     if (!displayControls.emptyBoard[this.id]) {
@@ -48,7 +46,7 @@ const gamePlayModule = (() => {
       this.textContent = defaultPlayer.name;
       //tenary condition
       defaultPlayer.name =
-        defaultPlayer.name == personX.name ? personO.name : personX.name;
+        defaultPlayer.name == player1.name ? player2.name : player1.name;
     }
     _winCondition(this.textContent);
   }
@@ -62,7 +60,12 @@ const gamePlayModule = (() => {
         displayControls.emptyBoard[b] === textContent &&
         displayControls.emptyBoard[c] === textContent
       ) {
-        return _changeStyleOnWin([a, b, c]);
+        displayControls.cells.forEach((cell) =>
+          cell.removeEventListener("click", gamePlayModule.playerChoice)
+        );
+        displayControls.restart.textContent = `Play again!`;
+
+        return [a, b, c];
       }
       if (displayControls.emptyBoard.every((cell) => cell != null)) {
         return console.log("draw");
@@ -70,8 +73,20 @@ const gamePlayModule = (() => {
     }
   }
 
+  /* 
+  function addCounterWin(array) {
+    if (array.every((value) => (value = player1.name))) {
+      counter++;
+      displayControls.playerXScore.innerText = `Player X -${counter}-`;
+    } else if (array.every((value) => (value = player2.name))) {
+      counter++;
+      displayControls.playerOScore.innerText = `Player O -${counter}-`;
+    }
+  }
+
+ */
   /* Private Function for grid cell bg clr change on win*/
-  function _changeStyleOnWin(winArray) {
+  /*   function _changeStyleOnWin(winArray) {
     if (winArray) {
       winArray.forEach(
         (value) => (
@@ -82,7 +97,7 @@ const gamePlayModule = (() => {
         )
       );
     }
-  }
+  } */
 
   /* Public Function */
   function restartGame() {
@@ -91,10 +106,12 @@ const gamePlayModule = (() => {
       (cell) => (
         (cell.textContent = ""),
         (cell.style.background = ""),
-        (cell.style.color = "")
+        (cell.style.color = ""),
+        cell.addEventListener("click", gamePlayModule.playerChoice)
       )
     );
-    players.defaultPlayer = players.playerX;
+    defaultPlayer.name = player1.name;
+    displayControls.restart.textContent = "Restart";
   }
 
   return { playerChoice, restartGame };
