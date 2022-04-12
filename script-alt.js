@@ -3,7 +3,8 @@ const displayControls = (function () {
   const cells = document.querySelectorAll(".grid-item");
   const restart = document.querySelector(".restart-btn");
   const scoreBoard = document.querySelector(".score");
-  const cellWinBgColor = "Red";
+  const blackdrob = document.querySelector(".blackdrop");
+  const cellWinBgColor = "grey";
   const cellWinTextColor = "White";
   const emptyBoard = Array(9).fill(null);
   const winBoard = [
@@ -24,6 +25,7 @@ const displayControls = (function () {
     cells,
     restart,
     scoreBoard,
+    blackdrob,
   };
 })();
 
@@ -67,7 +69,8 @@ const gamePlayModule = (() => {
         _changeFontAndBgStyleOnWin(winArray);
       }
       if (displayControls.emptyBoard.every((cell) => cell != null)) {
-        console.log("draw");
+        _blackDrop();
+        return alert("Draw");
       }
     }
   }
@@ -94,10 +97,12 @@ const gamePlayModule = (() => {
 
   /* Private Function */
   function _counterLimit() {
-    if (player1.score >= 5) {
+    if (player1.score >= 2) {
       console.log("player1 won");
+      _blackDrop();
     } else if (player2.score >= 3) {
       console.log("player2 won");
+      _blackDrop();
     }
   }
 
@@ -113,6 +118,10 @@ const gamePlayModule = (() => {
         )
       );
     }
+  }
+
+  function _blackDrop() {
+    displayControls.blackdrob.classList.add("visible");
   }
 
   /* Public Function */
