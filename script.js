@@ -8,6 +8,7 @@ const displayControls = (function () {
   const cellWinBgColor = "grey";
   const cellWinTextColor = "White";
   const emptyBoard = Array(9).fill(null);
+  const winMessage = document.querySelector(".winMsg");
   const winBoard = [
     [0, 1, 2],
     [3, 4, 5],
@@ -28,6 +29,7 @@ const displayControls = (function () {
     scoreBoard,
     blackdrob,
     replay,
+    winMessage,
   };
 })();
 
