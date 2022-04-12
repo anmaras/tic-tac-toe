@@ -1,6 +1,6 @@
 /* Array & Array win combo */
 const displayControls = (function () {
-  const cells = document.querySelectorAll(".grid-item");
+  const cells = Array.from(document.querySelectorAll(".grid-item"));
   const restart = document.querySelector(".restart-btn");
   const replay = document.querySelector(".replay-btn");
   const scoreBoard = document.querySelector(".score");
@@ -67,10 +67,13 @@ const gamePlayModule = (() => {
         _removeEventListener();
         _addPointOnWinCondition(winArray);
         _changeFontAndBgStyleOnWin(winArray);
-      }
-      if (displayControls.emptyBoard.every((cell) => cell != null)) {
-        displayControls.scoreBoard.textContent = "Draw";
-        return console.log("Draw");
+      } else if (
+        !winArray.every(
+          (input) => displayControls.cells[input].textContent === textContent
+        ) &&
+        displayControls.emptyBoard.every((cells) => cells !== null)
+      ) {
+        console.log("Draw");
       }
     }
   }
@@ -156,7 +159,7 @@ const gamePlayModule = (() => {
     replay();
     _blackDropAndRestastRemove();
     player1.score = 0;
-    player1.score = 0;
+    player2.score = 0;
     displayControls.scoreBoard.textContent = `${player1.score} : ${player2.score}`;
   }
 
