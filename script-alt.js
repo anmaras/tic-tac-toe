@@ -2,6 +2,7 @@
 const displayControls = (function () {
   const cells = document.querySelectorAll(".grid-item");
   const restart = document.querySelector(".restart-btn");
+  const replay = document.querySelector(".replay-btn");
   const scoreBoard = document.querySelector(".score");
   const blackdrob = document.querySelector(".blackdrop");
   const cellWinBgColor = "grey";
@@ -26,6 +27,7 @@ const displayControls = (function () {
     restart,
     scoreBoard,
     blackdrob,
+    replay,
   };
 })();
 
@@ -62,17 +64,21 @@ const gamePlayModule = (() => {
         displayControls.emptyBoard[c] === textContent
       ) {
         winArray = [a, b, c];
-        displayControls.cells.forEach((cell) =>
-          cell.removeEventListener("click", gamePlayModule.playerChoice)
-        );
+        _removeEventListener();
         _addPointOnWinCondition(winArray);
         _changeFontAndBgStyleOnWin(winArray);
       }
       if (displayControls.emptyBoard.every((cell) => cell != null)) {
-        _blackDrop();
-        return alert("Draw");
+        _blackDropAddAndRestartBtn();
+        return console.log("Draw");
       }
     }
+  }
+
+  function _removeEventListener() {
+    displayControls.cells.forEach((cell) =>
+      cell.removeEventListener("click", gamePlayModule.playerChoice)
+    );
   }
 
   /* Private Function */
@@ -97,12 +103,11 @@ const gamePlayModule = (() => {
 
   /* Private Function */
   function _counterLimit() {
-    if (player1.score >= 2) {
+    const maxWins = 3;
+    if (player1.score >= maxWins) {
       console.log("player1 won");
-      _blackDrop();
-    } else if (player2.score >= 3) {
+    } else if (player2.score >= maxWins) {
       console.log("player2 won");
-      _blackDrop();
     }
   }
 
@@ -120,12 +125,18 @@ const gamePlayModule = (() => {
     }
   }
 
-  function _blackDrop() {
+  function _blackDropAddAndRestartBtn() {
     displayControls.blackdrob.classList.add("visible");
+    displayControls.restart.classList.add("visible");
+  }
+
+  function _blackDropAndRestastRemove() {
+    displayControls.blackdrob.classList.remove("visible");
+    displayControls.restart.classList.remove("visible");
   }
 
   /* Public Function */
-  function restartGame() {
+  function replay() {
     displayControls.emptyBoard.fill(null);
     displayControls.cells.forEach(
       (cell) => (
@@ -139,11 +150,21 @@ const gamePlayModule = (() => {
     displayControls.restart.textContent = "Restart";
   }
 
-  return { playerChoice, restartGame };
+  function restart() {
+    replay();
+    _blackDropAndRestastRemove();
+    player1.score = 0;
+    player1.score = 0;
+    displayControls.scoreBoard.textContent = "0 : 0";
+  }
+
+  return { playerChoice, replay, restart };
 })();
 
 displayControls.cells.forEach((cell) =>
   cell.addEventListener("click", gamePlayModule.playerChoice)
 );
 
-displayControls.restart.addEventListener("click", gamePlayModule.restartGame);
+displayControls.replay.addEventListener("click", gamePlayModule.replay);
+
+displayControls.restart.addEventListener("click", gamePlayModule.restart);
