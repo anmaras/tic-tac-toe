@@ -39,9 +39,10 @@ const gamePlayModule = (() => {
 
   /* Public Function */
   function playerChoice() {
-    if (!displayControls.emptyBoard[this.id]) {
+    if (!displayControls.emptyBoard[this.id] && !this.textContent) {
       displayControls.emptyBoard[this.id] = defaultPlayer.name;
       this.textContent = defaultPlayer.name;
+
       //tenary condition
       defaultPlayer.name =
         defaultPlayer.name == player1.name ? player2.name : player1.name;
@@ -71,6 +72,7 @@ const gamePlayModule = (() => {
     }
   }
 
+  /* Private Function */
   function _addPointOnWinCondition(array) {
     if (
       array.every(
@@ -90,8 +92,9 @@ const gamePlayModule = (() => {
     _counterLimit();
   }
 
+  /* Private Function */
   function _counterLimit() {
-    if (player1.score >= 3) {
+    if (player1.score >= 5) {
       console.log("player1 won");
     } else if (player2.score >= 3) {
       console.log("player2 won");
@@ -127,7 +130,7 @@ const gamePlayModule = (() => {
     displayControls.restart.textContent = "Restart";
   }
 
-  return { playerChoice, restartGame, _winCondition };
+  return { playerChoice, restartGame };
 })();
 
 displayControls.cells.forEach((cell) =>
