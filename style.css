@@ -9,10 +9,12 @@ body {
 }
 
 body {
+  min-height: 100vh;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
   gap: 2rem;
 }
 
@@ -28,16 +30,6 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-around;
-}
-.player-turn {
-  font-size: 2rem;
-}
-
-.option {
-  border: 2px solid black;
-  padding: 0.5rem 2rem;
-  font-size: 2rem;
-  cursor: pointer;
 }
 
 #grid-container {
@@ -61,15 +53,36 @@ body {
   user-select: none;
 }
 
-.grid-item:hover,
-.option:hover {
-  background-color: rgb(189, 218, 218);
+.grid-item:hover {
   cursor: pointer;
 }
 
 #btn-container {
 }
 
-.restart-btn {
+.restart-btn,
+.replay-btn {
   font-size: 1.45rem;
+}
+
+.restart-btn {
+  font-size: 4rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.restart-btn.visible,
+.blackdrop.visible {
+  display: block;
+}
+
+.blackdrop {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
 }
