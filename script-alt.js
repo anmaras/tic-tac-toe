@@ -69,7 +69,7 @@ const gamePlayModule = (() => {
         _changeFontAndBgStyleOnWin(winArray);
       }
       if (displayControls.emptyBoard.every((cell) => cell != null)) {
-        _blackDropAddAndRestartBtn();
+        displayControls.scoreBoard.textContent = "Draw";
         return console.log("Draw");
       }
     }
@@ -103,11 +103,13 @@ const gamePlayModule = (() => {
 
   /* Private Function */
   function _counterLimit() {
-    const maxWins = 3;
+    const maxWins = 2;
     if (player1.score >= maxWins) {
       console.log("player1 won");
+      _blackDropAddAndRestartBtn();
     } else if (player2.score >= maxWins) {
       console.log("player2 won");
+      _blackDropAddAndRestartBtn();
     }
   }
 
@@ -147,7 +149,7 @@ const gamePlayModule = (() => {
       )
     );
     defaultPlayer.name = player1.name;
-    displayControls.restart.textContent = "Restart";
+    displayControls.scoreBoard.textContent = `${player1.score} : ${player2.score}`;
   }
 
   function restart() {
@@ -155,7 +157,7 @@ const gamePlayModule = (() => {
     _blackDropAndRestastRemove();
     player1.score = 0;
     player1.score = 0;
-    displayControls.scoreBoard.textContent = "0 : 0";
+    displayControls.scoreBoard.textContent = `${player1.score} : ${player2.score}`;
   }
 
   return { playerChoice, replay, restart };
