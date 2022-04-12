@@ -60,6 +60,19 @@ body {
 #btn-container {
 }
 
+.winMsg {
+  width: max-content;
+  padding: 2rem;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%);
+  color: aliceblue;
+  background-color: rgba(0, 0, 0, 0.812);
+  font-size: 5rem;
+  border-radius: 25px;
+}
+
 .restart-btn,
 .replay-btn {
   font-size: 1.45rem;
@@ -71,7 +84,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: none;
+  /* display: none; */
 }
 
 .restart-btn.visible,
@@ -84,5 +97,5 @@ body {
   height: 100%;
   position: absolute;
   background: rgba(0, 0, 0, 0.5);
-  display: none;
+  /* display: none; */
 }
